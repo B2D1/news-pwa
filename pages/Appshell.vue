@@ -1,18 +1,20 @@
-<template>
-</template>
+<template></template>
 
 <script>
 export default {
-    name: 'appshell',
-    metaInfo: {
-        title: 'Lavas',
-        meta: [
-            {name: 'keywords', content: 'lavas PWA'},
-            {name: 'description', content: '基于 Vue 的 PWA 解决方案，帮助开发者快速搭建 PWA 应用，解决接入 PWA 的各种问题'}
-        ],
-        bodyAttrs: {
-            'empty-appshell': undefined
-        }
+  name: "appshell",
+  metaInfo: {
+    title: "72 Kr",
+    meta: [
+      { name: "keywords", content: "72 kr 新闻" },
+      {
+        name: "description",
+        content: "由东哥打造的新闻系统"
+      }
+    ],
+    bodyAttrs: {
+      "empty-appshell": undefined
     }
+  }
 };
 </script>

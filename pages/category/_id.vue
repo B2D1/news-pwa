@@ -1,18 +1,23 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <figure class="snip1208">
-        <img :src="'https://b2d1-imgs.oss-cn-beijing.aliyuncs.com/lavas/' + detail.cover" alt="sample66" />
+      <figure v-for="(item, index) in this.news" :key="index" class="snip1208">
+        <img :src="'https://b2d1-imgs.oss-cn-beijing.aliyuncs.com/lavas/' + item.cover" alt="sample66" />
+        <div class="date">
+          <span class="month">{{new Date(item.createTime).getMonth() + 1 + '月'}}</span>
+          <span class="day">{{new Date(item.createTime).toLocaleDateString().substring(7,10) + '号'}}</span>
+        </div>
         <i class="ion-film-marker"></i>
         <figcaption>
-          <h3>{{detail.title}}</h3>
-          <span class="tag">{{detail.category.name}}</span>
-          <p>{{detail.content}}</p>
+          <h3>{{item.title}}</h3>
+          <p>{{summary(item.content)}}</p>
+          <button @click="goDetail(item._id)">阅读更多</button>
         </figcaption>
       </figure>
     </v-flex>
   </v-layout>
 </template> 
+
 <script>
 import request from "../../helpers/request";
 import { mapState } from "vuex";
@@ -45,7 +50,7 @@ export default {
   },
   metaInfo() {
     return {
-      title: `详情`,
+      title: `分类`,
       titleTemplate: "%s - 72 Kr",
       meta: [
         { name: "keywords", content: "72 kr 新闻" },
@@ -58,10 +63,10 @@ export default {
   },
   async asyncData({ store, route }) {
     setState(store);
-    await store.dispatch("news/getNewsDetail", route.params.id);
+    await store.dispatch("news/getCategoryNews", route.params.id);
   },
   computed: {
-    ...mapState("news", ["detail"])
+    ...mapState("news", ["news"])
   },
   created() {},
   activated() {
@@ -70,43 +75,15 @@ export default {
   methods: {
     summary(text) {
       return text.substr(0, 100) + "……";
+    },
+    goDetail(id) {
+      this.$router.push(`/detail/${id}`);
     }
   }
 };
 </script>
 
 <style scoped>
-.tag {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 14px;
-  font-variant: tabular-nums;
-  line-height: 1.5;
-  list-style: none;
-  -webkit-font-feature-settings: "tnum";
-  font-feature-settings: "tnum";
-  display: inline-block;
-  height: auto;
-  margin-right: 8px;
-  padding: 0 7px;
-  font-size: 12px;
-  line-height: 20px;
-  white-space: nowrap;
-  background: #fafafa;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  cursor: default;
-  opacity: 1;
-  -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-  background-color: rgb(16, 142, 233);
-  color: #fff;
-  border-color: transparent;
-  margin-bottom: 8px;
-}
 figure.snip1208 {
   font-family: "Raleway", Arial, sans-serif;
   color: #fff;
